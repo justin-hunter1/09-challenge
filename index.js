@@ -8,18 +8,6 @@ const gmd = require('./generateMarkdown.js');
 const questions = [
     {
         type: 'input',
-        message: "What is your GitHub username? (No @ needed)",
-        name: 'username',
-        default: '',
-    },
-    {
-        type: 'input',
-        message: "What is the name of your GitHub repo?",
-        name: 'repo',
-        default: '',
-    },
-    {
-        type: 'input',
         message: "What is the title of your project?",
         name: 'title',
         default: 'Project Title',
@@ -32,13 +20,18 @@ const questions = [
     },
     {
         type: 'input',
-        message: "If applicable, describe the steps required to install your project.",
+        message: "If applicable, how do you install your project.",
         name: 'installation'
     },
     {
         type: 'input',
         message: "If applicable, provide instructions on how to use your project.",
         name: 'usage'
+    },
+    {
+        type: 'input',
+        message: "If applicable, who did you get idea's or assistance from in creating this project.",
+        name: 'credit'
     },
     {
         type: 'list',
@@ -50,21 +43,20 @@ const questions = [
 
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
-    console.log("creating file!")
+    fs.writeFile(fileName, data, (err) => err ? console.log(err) : console.log("creating file!"))
 }
 
 // TODO: Create a function to initialize app
 function init() {
-    .then {
-        const answers = inquirer.prompt(questions);
-    let rmd = gmd(answers);
-    writeToFile(`${answers.title}.md`,rmd);
-    }
-    catch (err) {
-
-    }
+    inquirer
+        .prompt(questions)
+        .then((answers) => {
+            let rmd = gmd(answers);
+            writeToFile(`${answers.title}.md`, rmd);
+    });
 
 }
+    
 
 // Function call to initialize app
 init();
